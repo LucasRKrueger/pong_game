@@ -10,7 +10,12 @@ class cBall
         int originalX, originalY;
         eDirection direction;
 
-    public:    
+    public:
+
+        inline int getX(){return x;}
+        inline int getY(){return y;}
+        inline eDirection getDirection(){return direction;}    
+
         cBall(int positionX, int positionY)
         {
             originalX = positionX;
@@ -34,12 +39,57 @@ class cBall
         {
             direction = (eDirection)((rand()% 6) + 1);
         }
-        inline int getX(){return x;}
-        inline int getY(){return y;}
-        inline eDirection getDirection(){return direction;}
+
+        void Move()
+        {
+            switch(direction)
+            {
+                case STOP:
+                    break;
+                case LEFT:
+                    x--;
+                    break;
+                case RIGHT
+                    x++;
+                    break;
+                case UPLEFT
+                    x--; y--;
+                    break;
+                case DOWNLEFT
+                    x--; y++;
+                    break;
+                case UPRIGHT
+                    x++; y--;
+                    break;
+                case DOWNRIGHT
+                    x++; y++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        friend ostream & operator<<(ostream & o, cBall ball)
+        {
+            o << "Ball[" << ball.x<< "," << ball.y << "][" << ball.direction << "]";
+            return o;
+        }
 };
 
 int main()
 {
+    //like a mock
+    cBall ball(0, 0);
+    cout << ball << endl;
+    ball.randomDirection();
+    cout << ball << endl;
+    ball.Move();
+    cout << ball << endl;
+    ball.randomDirection();
+    ball.Move();
+    cout << ball << endl;
+    ball.randomDirection();
+    ball.Move();
+    cout << ball << endl;
     return 0;   
 }
