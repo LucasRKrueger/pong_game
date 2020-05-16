@@ -111,7 +111,7 @@ public:
 	inline int moveUp() {y--;}
 	inline int moveDown() {y++;}
 
-	friend ostream & operator << (ostream& o, Paddle paddle)
+	friend ostream & operator << (ostream & o, Paddle paddle)
 	{
 		o << "Paddle[" << paddle.x << "," << paddle.y << "]";
 		return o;
@@ -139,7 +139,7 @@ class GameManager
 			width = pWidth; height = pHeight;
 			ball = new Ball(width / 2, height / 2);
 			player1 = new Paddle(1, height / 2 - 3);
-			player1 = new Paddle(width - 2, height / 2 - 3);
+			player2 = new Paddle(width - 2, height / 2 - 3);
 		}
 		~GameManager() 
 		{
@@ -156,21 +156,54 @@ class GameManager
 			player1->Reset();
 			player2->Reset();
 		}
+		void Draw()
+		{
+			//system("clear") //lixus
+			system("cls"); // windows
+			for (int i = 0; i < width + 2; i++)			
+				cout << "#";
+			cout << endl;
+
+			for (int i = 0; i < height; i++)
+			{
+				for (int j = 0; j < width; j++)
+				{
+					int ballX = ball->getX();
+					int ballY = ball->getY();
+
+					int player1X = player1->getX();
+					int player1Y = player1->getY();
+
+					int player2X = player2->getX();
+					int player2Y = player2->getY();
+
+					if (j == 0)
+						cout << "#";
+
+					if (ballX == j && ballY == i)
+						cout << "0";//ball
+					else if (player1X == j && player1Y == i)
+						cout << "#";//player 1
+					else if (player2X == j && player2Y == i)
+						cout << "#";//player 2
+					else
+						cout << " ";
+
+					if (j == width - 1)
+						cout << "#";
+				}
+				cout << endl;
+			}
+
+			for (int i = 0; i < width + 2; i++)
+				cout << "#";
+			cout << endl;
+		}
 };
 
 int main()
 {
-	Paddle paddle1(0, 0);
-	Paddle paddle2(10, 0);
-
-	cout << paddle1 << endl;
-	cout << paddle2 << endl;
-
-	paddle1.moveUp();
-	paddle2.moveDown();
-
-	cout << paddle1 << endl;
-	cout << paddle2 << endl;
-
+	GameManager gameManager(40, 20);
+	gameManager.Draw();
 	return 0;
 }
