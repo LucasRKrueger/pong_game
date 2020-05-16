@@ -161,7 +161,7 @@ class GameManager
 			//system("clear") //lixus
 			system("cls"); // windows
 			for (int i = 0; i < width + 2; i++)			
-				cout << "#";
+				cout << "\xB2";
 			cout << endl;
 
 			for (int i = 0; i < height; i++)
@@ -178,25 +178,41 @@ class GameManager
 					int player2Y = player2->getY();
 
 					if (j == 0)
-						cout << "#";
+						cout << "\xB2";
 
 					if (ballX == j && ballY == i)
 						cout << "0";//ball
 					else if (player1X == j && player1Y == i)
-						cout << "#";//player 1
+						cout << "\xDB";//player 1
 					else if (player2X == j && player2Y == i)
-						cout << "#";//player 2
+						cout << "\xDB";//player 2
+
+					else if (player1X == j && player1Y + 1 == i)
+						cout << "\xDB";
+					else if (player1X == j && player1Y + 2 == i)
+						cout << "\xDB";
+					else if (player1X == j && player1Y + 3 == i)
+						cout << "\xDB";
+
+					else if (player2X == j && player2Y + 1 == i)
+						cout << "\xDB";
+					else if (player2X == j && player2Y + 2 == i)
+						cout << "\xDB";
+					else if (player2X == j && player2Y + 3 == i)
+						cout << "\xDB";
+
+
 					else
 						cout << " ";
 
 					if (j == width - 1)
-						cout << "#";
+						cout << "\xB2";
 				}
 				cout << endl;
 			}
 
 			for (int i = 0; i < width + 2; i++)
-				cout << "#";
+				cout << "\xB2";
 			cout << endl;
 		}
 };
