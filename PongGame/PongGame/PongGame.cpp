@@ -108,8 +108,8 @@ public:
 	inline void Reset() {x = originalX, y = originalY;}
 	inline int getX() {return x;}
 	inline int getY() {return y;}
-	inline int moveUp() {y--;}
-	inline int moveDown() {y++;}
+	inline void moveUp() { y--;}
+	inline void moveDown() { y++;}
 
 	friend ostream & operator << (ostream & o, Paddle paddle)
 	{
@@ -214,12 +214,99 @@ class GameManager
 			for (int i = 0; i < width + 2; i++)
 				cout << "\xB2";
 			cout << endl;
+
+			cout << "PLAYER1 SCORE >>" << score1 << "<<" << endl;
+			cout << "PLAYER2 SCORE >>" << score2 << "<<" << endl;
+		}
+		void Input()
+		{
+			ball->Move();
+
+			int ballX = ball->getX();
+			int ballY = ball->getY();
+
+			int player1X = player1->getX();
+			int player1Y = player1->getY();
+
+			int player2X = player2->getX();
+			int player2Y = player2->getY();
+
+			if (_kbhit())
+			{
+				char current = _getch();
+				if (current == up1)
+					if (player1Y > 0)
+						player1->moveUp();
+				if (current == up2)
+					if (player2Y > 0)
+						player2->moveUp();
+				if (current == down1)
+					if (player1Y + 4 < height)
+						player1->moveDown();
+				if (current == down2)
+					if (player2Y + 4 < height)
+						player2->moveDown();
+
+				if (ball->getDirection() == STOP)
+					ball->randomDirection();
+
+				if (current == 'q')
+					quit = true;
+			}
+		}
+		void Logic()
+		{
+			int ballX = ball->getX();
+			int ballY = ball->getY();
+
+			int player1X = player1->getX();
+			int player1Y = player1->getY();
+
+			int player2X = player2->getX();
+			int player2Y = player2->getY();
+
+			//left player
+			for (int i = 0; i < 4; i++)			
+				if (ballX == player1X + 1)
+					if (ballY == player1Y + i)
+						ball->changeDIrection((eDirection)((rand() % 3) + 4));	
+
+			//right player
+			for (int i = 0; i < 1; i++)
+				if (ballX == player2X - 1)
+					if (ballY == player2Y + i)
+						ball->changeDIrection((eDirection)((rand() % 3) + 1));
+
+			//bottom wall
+			if (ballY == height - 1)
+				ball->changeDIrection(ball->getDirection() == DOWNRIGHT ? UPRIGHT : UPLEFT);
+
+			//top wall
+			if (ballY == 0)
+				ball->changeDIrection(ball->getDirection() == UPRIGHT ? DOWNRIGHT: DOWNLEFT);
+
+			//right wall
+			if (ballX == width - 1)
+				ScoreUp(player1);
+
+			//left wall
+			if (ballX == 0)
+				ScoreUp(player2);
+		}
+		void Run()
+		{
+			while (!quit)
+			{
+				Draw();
+				Input();
+				Logic();
+			}
 		}
 };
 
 int main()
 {
 	GameManager gameManager(40, 20);
-	gameManager.Draw();
+	gameManager.Run();
 	return 0;
 }
